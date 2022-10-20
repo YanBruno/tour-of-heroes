@@ -10,23 +10,31 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { LoadingComponent } from './components/loading/loading.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
+import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
-const MODULES = [CommonModule, RouterModule, MaterialModule, FlexLayoutModule];
+const MODULES = [RouterModule, MaterialModule, FlexLayoutModule];
 const COMPONENTS = [
   ToolbarComponent,
   MessagesComponent,
   PageNotFoundComponent,
   LoadingComponent,
+  ConfirmationDialogComponent,
 ];
 
 @NgModule({
   declarations: [COMPONENTS],
-  imports: [MODULES],
+  imports: [CommonModule, MODULES],
   exports: [MODULES, COMPONENTS],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
       multi: true,
     },
   ],
