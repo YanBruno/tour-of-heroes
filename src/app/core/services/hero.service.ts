@@ -16,7 +16,7 @@ export class HeroService {
     private http: HttpClient
   ) {}
 
-  getHero(id: number): Observable<Hero> {
+  getById(id: number): Observable<Hero> {
     return this.http.get<Hero>(`${this.heroesUrl}/${id}`).pipe(
       tap((hero) => {
         this.log(`fetched hero id = ${hero.id} and name = ${hero.name}`);
@@ -25,10 +25,19 @@ export class HeroService {
     );
   }
 
-  getHeroes(): Observable<Hero[]> {
+  getAll(): Observable<Hero[]> {
     return this.http.get<Hero[]>(this.heroesUrl).pipe(
       tap((heroes) => {
         this.log(`fetched ${heroes.length} hero(es) `);
+      }),
+      first()
+    );
+  }
+
+  update(hero: Hero): Observable<Hero> {
+    return this.http.put<Hero>(`${this.heroesUrl}/${hero.id}`, hero).pipe(
+      tap((heroes) => {
+        this.log(`updated hero id =  ${hero.id} and name = ${hero.name}`);
       }),
       first()
     );
