@@ -1,9 +1,13 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { MaterialModule } from './material/material.module';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { MessagesComponent } from './components/messages/messages.component';
 
-const MODULES = [MaterialModule];
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
+const MODULES = [CommonModule, RouterModule, MaterialModule, FlexLayoutModule];
 const COMPONENTS = [ToolbarComponent, MessagesComponent];
 
 @NgModule({
@@ -11,4 +15,12 @@ const COMPONENTS = [ToolbarComponent, MessagesComponent];
   imports: [MODULES],
   exports: [MODULES, COMPONENTS],
 })
-export class CoreModule {}
+export class CoreModule {
+  constructor(@Optional() @SkipSelf() parentModule?: CoreModule) {
+    if (parentModule) {
+      throw new Error(
+        'CoreModule has already been loaded. Import this module in the AppModule.'
+      );
+    }
+  }
+}

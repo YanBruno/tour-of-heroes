@@ -3,7 +3,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -15,7 +14,6 @@ const MODULES = [
   MatButtonModule,
   MatExpansionModule,
   MatIconModule,
-  FlexLayoutModule,
   MatTooltipModule,
   MatCardModule,
   MatListModule,
