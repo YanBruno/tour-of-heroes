@@ -1,6 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { Observable, Subject, switchMap } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  Observable,
+  Subject,
+  switchMap,
+} from 'rxjs';
 import { Hero } from 'src/app/core/models/hero.model';
 import { HeroService } from 'src/app/core/services/hero.service';
 
@@ -10,6 +16,7 @@ import { HeroService } from 'src/app/core/services/hero.service';
   styleUrls: ['./hero-search.component.scss'],
 })
 export class HeroSearchComponent implements OnInit {
+  @Input() label: string = '';
   heroes$!: Observable<Hero[]>;
 
   private searchTerm = new Subject<string>();
@@ -19,6 +26,8 @@ export class HeroSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.heroes$ = this.searchTerm.pipe(
+      distinctUntilChanged(),
+      debounceTime(600),
       switchMap((term) => this.heroService.getSearch(term))
     );
   }
