@@ -20,9 +20,9 @@ export class TokenInterceptor implements HttpInterceptor {
       localStorage.setItem('token', token);
     }
 
-    // request = request.clone({
-    //   setHeaders: { Authorization: token },
-    // });
+    request = request.clone({
+      setHeaders: { Authorization: token },
+    });
 
     return next.handle(request);
   }
