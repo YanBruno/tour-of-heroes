@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HeroService } from '../core/services/hero.service';
-import { Hero } from '../core/models/hero.model';
+
+import { Router } from '@angular/router';
+import { Hero } from 'src/app/core/models/hero.model';
+import { HeroService } from 'src/app/core/services/hero.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +12,7 @@ import { Hero } from '../core/models/hero.model';
 export class DashboardComponent implements OnInit {
   heroes: Hero[] = [];
 
-  constructor(private heroService: HeroService) {}
+  constructor(private heroService: HeroService, private router: Router) {}
 
   ngOnInit(): void {
     this.getHeroes();
@@ -20,5 +22,9 @@ export class DashboardComponent implements OnInit {
     this.heroService.getAll().subscribe((heroes) => {
       this.heroes = heroes.slice(1, 5);
     });
+  }
+
+  onSelected(hero: Hero): void {
+    this.router.navigate(['/heroes', hero.id]);
   }
 }

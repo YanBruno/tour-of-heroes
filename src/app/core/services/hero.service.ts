@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { first, Observable, tap } from 'rxjs';
+import { first, Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Hero } from '../models/hero.model';
 import { MessageService } from './message.service';
@@ -16,10 +16,34 @@ export class HeroService {
     private http: HttpClient
   ) {}
 
-  getById(id: number): Observable<Hero> {
-    return this.http.get<Hero>(`${this.heroesUrl}/${id}`).pipe(
+  create(hero: Hero): Observable<Hero> {
+    return this.http.post<Hero>(this.heroesUrl, hero).pipe(
       tap((hero) => {
-        this.log(`fetched hero id = ${hero.id} and name = ${hero.name}`);
+        this.log(`created ${this.descHero(hero)}`);
+      }),
+      first()
+    );
+  }
+
+  getById(id: number): Observable<Hero> {
+    return this.http.get<Hero>(`${this.getUrl(id)}`).pipe(
+      tap((hero) => {
+        this.log(`fetched ${this.descHero(hero)}`);
+      }),
+      first()
+    );
+  }
+
+  getSearch(term: string): Observable<Hero[]> {
+    if (!term.trim()) {
+      return of([]);
+    }
+
+    return this.http.get<Hero[]>(`${this.heroesUrl}?name=${term}`).pipe(
+      tap((result) => {
+        result.length
+          ? this.log(`found ${result.length} hero(es) matching ${term}`)
+          : this.log(`no hero(es) matching ${term}`);
       }),
       first()
     );
@@ -35,15 +59,32 @@ export class HeroService {
   }
 
   update(hero: Hero): Observable<Hero> {
-    return this.http.put<Hero>(`${this.heroesUrl}/${hero.id}`, hero).pipe(
-      tap((heroes) => {
-        this.log(`updated hero id =  ${hero.id} and name = ${hero.name}`);
+    return this.http.put<Hero>(`${this.getUrl(hero.id)}`, hero).pipe(
+      tap(() => {
+        this.log(`updated ${this.descHero(hero)}`);
       }),
       first()
     );
   }
 
+  delete(hero: Hero): Observable<any> {
+    return this.http.delete<any>(`${this.getUrl(hero.id)}`).pipe(
+      tap(() => {
+        this.log(`deleted ${this.descHero(hero)}`);
+      }),
+      first()
+    );
+  }
+
+  private getUrl(id: number): string {
+    return `${this.heroesUrl}/${id}`;
+  }
+
   private log(message: string): void {
     this.messageService.add(`HeroService: ${message}`);
+  }
+
+  private descHero(hero: Hero): string {
+    return `hero id = ${hero.id} and name = ${hero.name}`;
   }
 }
