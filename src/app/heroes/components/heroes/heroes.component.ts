@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from 'src/app/core/components/confirmation-dialog/confirmation-dialog.component';
 import { DialogData } from 'src/app/core/models/dialog-data.model';
 import { Hero } from 'src/app/core/models/hero.model';
@@ -14,7 +15,11 @@ export class HeroesComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'actions'];
   heroes: Hero[] = [];
 
-  constructor(private heroService: HeroService, private dialog: MatDialog) {}
+  constructor(
+    private heroService: HeroService,
+    private dialog: MatDialog,
+    private router: Router
+  ) {}
   ngOnInit(): void {
     this.getHeroes();
   }
@@ -43,5 +48,10 @@ export class HeroesComponent implements OnInit {
         });
       }
     });
+  }
+
+  onSelected(hero: Hero): void {
+    // this.router.navigate(['/heroes', hero.id]);
+    this.delete(hero);
   }
 }

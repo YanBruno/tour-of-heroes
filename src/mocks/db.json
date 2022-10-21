@@ -1,14 +1,6 @@
 {
   "heroes": [
     {
-      "id": 1,
-      "name": "Wolverine"
-    },
-    {
-      "id": 2,
-      "name": "Batman"
-    },
-    {
       "id": 3,
       "name": "Homem Aranha"
     },
