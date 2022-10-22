@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material/material.module';
 import { LoginComponent } from './components/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AuthRoutingModule } from './auth-routing.module';
 
-const MODULES = [MaterialModule, ReactiveFormsModule];
+const AUTH_MODULES = [MaterialModule, ReactiveFormsModule, AuthRoutingModule];
 
 @NgModule({
   declarations: [LoginComponent],
-  imports: [CommonModule, MODULES],
+  imports: [CommonModule, AUTH_MODULES],
 })
 export class AuthModule {}

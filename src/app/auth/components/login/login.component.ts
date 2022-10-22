@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Credentials } from '../../models/credentials.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +17,11 @@ export class LoginComponent {
     password: ['', [Validators.required, Validators.minLength(10)]],
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private authService: AuthService) {}
 
-  onSubmit(): void {}
+  onSubmit(): void {
+    if (this.form.valid) {
+      this.authService.login(this.form.value as Credentials);
+    }
+  }
 }
